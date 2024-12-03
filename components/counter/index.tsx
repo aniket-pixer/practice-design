@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Container, Button, LoginContainer, Input, LoginForm } from "./style";
 
 interface CounterProps {
@@ -8,11 +8,8 @@ interface CounterProps {
   onLogin?: (username: string, password: string) => void;
 }
 
-const Counter: React.FC<CounterProps> = ({
-  initialCount = 0,
-  initialTheme = "light",
-  onLogin,
-}) => {
+const Counter: React.FC<CounterProps> = (props) => {
+  const { initialCount = 0, initialTheme = "light", onLogin } = props || {};
   // This state using for theme color change
   const [theme, setTheme] = useState(initialTheme);
 
@@ -26,9 +23,10 @@ const Counter: React.FC<CounterProps> = ({
   const [password, setPassword] = useState("");
 
   // This function is using for the change the theme color
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  }, []);
+
   // This function is using for the increasing or decreasing counter number
   if (prevCount !== count) {
     setPrevCount(count);
