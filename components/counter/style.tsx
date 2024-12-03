@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const Container = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "themeMode", // Prevent themeMode from being passed to the DOM
+const Container = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "themeMode",
 })<{ themeMode: "light" | "dark" }>`
   background-color: ${({ themeMode }) =>
     themeMode === "light" ? "#fff" : "#333"};
@@ -14,25 +14,27 @@ export const Container = styled.div.withConfig({
   gap: 20px;
 `;
 
-export const Button = styled.button`
+const Button = styled.button`
   padding: 8px 16px;
   cursor: pointer;
 `;
 
-export const LoginContainer = styled.div`
+const LoginContainer = styled.div`
   width: 300px;
   margin: 0 auto;
   text-align: center;
 `;
 
-export const Input = styled.input`
+const Input = styled.input`
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
 `;
 
-export const LoginForm = styled.form`
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
+
+export { Container, Button, LoginContainer, Input, LoginForm };

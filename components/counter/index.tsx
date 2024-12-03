@@ -2,33 +2,40 @@
 import React, { useState } from "react";
 import { Container, Button, LoginContainer, Input, LoginForm } from "./style";
 
-interface ExampleTaskProps {
+interface CounterProps {
   initialCount?: number;
   initialTheme?: "light" | "dark";
   onLogin?: (username: string, password: string) => void;
 }
 
-const ExampleTask: React.FC<ExampleTaskProps> = ({
+const Counter: React.FC<CounterProps> = ({
   initialCount = 0,
   initialTheme = "light",
   onLogin,
 }) => {
+  // This state using for theme color change
+  const [theme, setTheme] = useState(initialTheme);
+
+  // This state using for counter
   const [count, setCount] = useState(initialCount);
   const [prevCount, setPrevCount] = useState(count);
   const [trend, setTrend] = useState<boolean | null>(null);
-  const [theme, setTheme] = useState(initialTheme);
+
+  // This state using for login form
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // This function is using for the change the theme color
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+  // This function is using for the increasing or decreasing counter number
   if (prevCount !== count) {
     setPrevCount(count);
     setTrend(count > prevCount);
   }
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
-
+  // This function is using for the submitting Login form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onLogin) {
@@ -40,6 +47,15 @@ const ExampleTask: React.FC<ExampleTaskProps> = ({
 
   return (
     <Container themeMode={theme}>
+      {/* HTML code for the theme change */}
+      <div>
+        <h1>{theme.charAt(0).toUpperCase() + theme.slice(1)} Theme</h1>
+        <Button onClick={toggleTheme}>
+          Switch to {theme === "light" ? "Dark" : "Light"} Theme
+        </Button>
+      </div>
+
+      {/* HTML code for the counter increasing and decreasing */}
       <div>
         <div>
           <h1>{count}</h1>
@@ -52,12 +68,8 @@ const ExampleTask: React.FC<ExampleTaskProps> = ({
           <Button onClick={() => setCount(count - 1)}>Decrement</Button>
         </div>
       </div>
-      <div>
-        <h1>{theme.charAt(0).toUpperCase() + theme.slice(1)} Theme</h1>
-        <Button onClick={toggleTheme}>
-          Switch to {theme === "light" ? "Dark" : "Light"} Theme
-        </Button>
-      </div>
+
+      {/* HTML code for the login form  */}
       <LoginContainer>
         <h1>Login</h1>
         <LoginForm onSubmit={handleSubmit}>
@@ -80,4 +92,4 @@ const ExampleTask: React.FC<ExampleTaskProps> = ({
   );
 };
 
-export default ExampleTask;
+export default Counter;
