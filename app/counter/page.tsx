@@ -1,6 +1,5 @@
 import React from "react";
 import CounterPage from "./counter";
-
 function PageCounter() {
   return (
     <div>
