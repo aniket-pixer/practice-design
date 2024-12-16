@@ -13,12 +13,10 @@ type ModalProps = {
 };
 
 const ModalSection: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
-
   return (
     <>
-      <ModalOverlay onClick={onClose} />
-      <ModalContainer>
+      <ModalOverlay isVisible={isOpen} />
+      <ModalContainer isVisible={isOpen}>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <ModalContent>{children}</ModalContent>
       </ModalContainer>
