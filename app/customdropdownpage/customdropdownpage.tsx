@@ -1,6 +1,7 @@
 import React from "react";
 import CustomDropdown from "@/components/customdropdown";
 import type { MenuInfo } from "rc-menu/lib/interface"; // Import MenuInfo type for clarity
+import { CustomDropdownMain } from "./style";
 
 const CustomDropdownHome = () => {
   const menuList = [
@@ -14,14 +15,14 @@ const CustomDropdownHome = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <CustomDropdownMain>
       <h1>Custom Dropdown Example</h1>
       <CustomDropdown
         menuList={menuList}
         buttonLabel="Select an Option"
         onMenuClick={handleMenuClick}
       />
-    </div>
+    </CustomDropdownMain>
   );
 };
 

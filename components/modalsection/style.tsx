@@ -22,6 +22,11 @@ const ModalContainer = styled.div`
   z-index: 1001;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: opacity 0.3s ease; /* Smooth fade-in/out */
+  :active {
+    opacity: 1;
+    pointer-events: all; /* Enable interaction */
+  }
 `;
 
 const ModalContent = styled.div`
