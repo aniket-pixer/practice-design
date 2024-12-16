@@ -1,20 +1,43 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const ModalOverlay = styled.div`
+interface Props {
+  isVisible: boolean;
+}
+
+const ModalOverlay = styled.div<Props>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  ${(props) =>
+    props.isVisible &&
+    css`
+      opacity: 1;
+    `};
+  visibility: hidden;
+  ${(props) =>
+    props.isVisible &&
+    css`
+      visibility: visible;
+    `};
+
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 1000;
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<Props>`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.9);
+  ${(props) =>
+    props.isVisible &&
+    css`
+      transform: translate(-50%, -50%) scale(1);
+    `};
   background: white;
   border-radius: 8px;
   width: 90%;
@@ -22,6 +45,13 @@ const ModalContainer = styled.div`
   z-index: 1001;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  opacity: 0;
+  ${(props) =>
+    props.isVisible &&
+    css`
+      opacity: 1;
+    `};
+  transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
 const ModalContent = styled.div`
