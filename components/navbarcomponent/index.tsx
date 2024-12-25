@@ -24,6 +24,12 @@ const NavBarComponent: React.FC = () => {
         <NavLink>
           <Link href="/modal">Modal</Link>
         </NavLink>
+        <NavLink>
+          <Link href="/animation">Animation</Link>
+        </NavLink>
+        <NavLink>
+          <Link href="/faq">FAQ</Link>
+        </NavLink>
       </NavLinks>
       <NavRightSection>
         <button>Login</button>

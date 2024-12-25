@@ -1,6 +1,14 @@
 import { css } from "styled-components";
 
 export const Typography = {
+  body_lg_regular: css`
+    font-size: 18px;
+    font-weight: 600;
+  `,
+  body_lmd_regular: css`
+    font-size: 16px;
+    font-weight: 600;
+  `,
   body_md_regular: css`
     font-size: 14px;
     line-height: 20px;
@@ -44,6 +52,10 @@ export const Typography = {
   heading_lg_regular: css`
     font-size: 20px;
     line-height: 24px;
+    font-weight: 500;
+  `,
+  heading_large_regular: css`
+    font-size: 48px;
     font-weight: 500;
   `,
 };
