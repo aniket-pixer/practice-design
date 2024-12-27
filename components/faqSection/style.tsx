@@ -1,86 +1,14 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Typography } from "@/styles/typography";
 
-// Define Props interface
-interface Props {
-  isOpen?: boolean;
-}
-
-// Styled FAQItem
-const FAQItem = styled.div`
-  overflow: hidden;
-  transition: all 0.3s ease;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-// Styled Question
-const Question = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
-})<Props>`
-  ${Typography.body_lg_regular}
-  color: #333;
-  background: rgb(255, 255, 255);
-  ${(props) =>
-    props.isOpen &&
-    css`
-      background: rgb(247, 247, 248);
-    `};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-// Styled Answer
-const Answer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
-})<Props>`
-  max-height: 0;
-  ${(props) =>
-    props.isOpen &&
-    css`
-      max-height: none;
-    `};
-
-  overflow: hidden;
-  padding: 0;
-  ${(props) =>
-    props.isOpen &&
-    css`
-      padding: 16px 0 0;
-    `}
-  ${Typography.body_lmd_regular}
-  color: rgb(108, 110, 120);
-  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease,
-    visibility 0.3s ease;
-  ${(props) =>
-    props.isOpen &&
-    css`
-      background-color: rgb(247, 247, 248);
-    `};
-`;
-
-// Styled FAQSectionWrapper
-const FAQSectionWrapper = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
-})<Props>`
-  padding: 24px;
-  border: 1px solid rgb(220, 220, 221);
-  margin-bottom: 24px;
-  border-radius: 16px;
-  ${(props) =>
-    props.isOpen &&
-    css`
-      background-color: rgb(247, 247, 248);
-    `};
-`;
-
-// Styled FAQTitle
+// Styled Components
 const FAQTitle = styled.h1`
   ${Typography.heading_large_regular};
   text-align: center;
   margin-top: 50px;
+  &:hover {
+    color: black;
+  }
 `;
 
 // Styled FAQDescription
@@ -93,23 +21,93 @@ const FAQDescription = styled.p`
 `;
 
 const FAQContainer = styled.div`
-  max-width: 736px;
   margin: 0 auto;
+  max-width: 736px;
 `;
 
-const PlusIcon = styled.span<{ isOpen: boolean }>`
-  font-size: 1.5rem;
-  transform: ${({ isOpen }) => (isOpen ? "rotate(45deg)" : "rotate(0deg)")};
-  transition: transform 0.3s ease;
+const Accordion = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const AccordionItem = styled.div`
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 24px;
+`;
+
+const AccordionButton = styled.button<{ "aria-expanded": boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: ${({ "aria-expanded": expanded }) => (expanded ? "black" : "#7288a2")};
+  cursor: pointer;
+  text-align: left;
+  &:hover {
+    color: black;
+  }
+`;
+
+const Icon = styled.span<{ "aria-expanded": boolean }>`
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  transform: rotate(
+    ${({ "aria-expanded": expanded }) => (expanded ? "45deg" : "0deg")}
+  );
+  transition: transform 300ms ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: currentColor;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+`;
+
+const AccordionContent = styled.div<{ height: number }>`
+  max-height: ${({ height }) => height}px;
+  opacity: ${({ height }) => (height ? 1 : 0)};
+  overflow: hidden;
+  transition: max-height 300ms ease, opacity 300ms ease;
+`;
+
+const Answer = styled.div`
+  ${Typography.body_lmd_regular}
+  color: rgb(108, 110, 120);
+  padding-top: 16px;
 `;
 
 export {
   FAQTitle,
-  FAQSectionWrapper,
-  Answer,
-  Question,
-  FAQItem,
-  FAQContainer,
   FAQDescription,
-  PlusIcon,
+  FAQContainer,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  Icon,
+  AccordionContent,
+  Answer,
 };

@@ -1,70 +1,102 @@
-"use client";
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  FAQItem,
-  FAQContainer,
-  Question,
+  Accordion,
+  AccordionButton,
+  AccordionContent,
+  AccordionItem,
   Answer,
-  FAQSectionWrapper,
-  FAQTitle,
+  FAQContainer,
   FAQDescription,
-  PlusIcon,
+  FAQTitle,
+  Icon,
 } from "./style";
 
 const FAQSection = () => {
-  const faqs = [
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const contentRefs = useRef<HTMLDivElement[]>([]);
+
+  const toggleAccordion = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  const getContentHeight = (index: number) => {
+    if (contentRefs.current[index]) {
+      return contentRefs.current[index].scrollHeight;
+    }
+    return 0;
+  };
+
+  const faqItems = [
     {
-      question: "How much does Teamcamp cost per user?",
-      answer:
-        "Teamcamp offers tiered pricing plans, so the cost depends on features and number of users.",
+      title:
+        "Can I create custom invoices with my company branding in Teamcamp?",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Donec vel orci ut velit pulvinar scelerisque. Quisque ac tristique nisl.",
     },
     {
-      question: "Is there a free trial available for Teamcamp?",
-      answer:
-        "Yes, Teamcamp typically offers a free trial to explore its functionalities.",
+      title: "Does Teamcamp offer online payment processing for invoices?",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti.",
     },
     {
-      question:
-        "Do you offer any discounts for non-profit organizations or startups?",
-      answer:
-        "Teamcamp may have special pricing options for non-profits and startups. Contact sales for details.",
+      title:
+        "Can I send automated payment reminders to clients through Teamcamp?",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.",
     },
     {
-      question: "What happens if I outgrow my current plan?",
-      answer:
-        "Teamcamp allows you to easily upgrade your plan as your team or business needs evolve.",
+      title: "Does Teamcamp offer online payment processing for invoices?",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti.",
     },
     {
-      question: "Do you offer any pay-as-you-go options?",
-      answer:
-        "Check Teamcamp's pricing page to see if they offer any pay-as-you-go options for specific features.",
+      title: "Does Teamcamp offer online payment processing for invoices?",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti.",
     },
   ];
 
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  useEffect(() => {
+    // Optional: Handle content resize dynamically
+    const resizeObserver = new ResizeObserver(() => {
+      if (activeIndex !== null && contentRefs.current[activeIndex]) {
+        // Force re-render with updated height
+        setActiveIndex((prev) => prev);
+      }
+    });
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+    contentRefs.current.forEach((ref) => {
+      if (ref) resizeObserver.observe(ref);
+    });
+
+    return () => resizeObserver.disconnect();
+  }, [activeIndex]);
 
   return (
     <FAQContainer>
       <FAQTitle>Frequently asked questions</FAQTitle>
       <FAQDescription>Have questions? We’re here to help.</FAQDescription>
-      {faqs.map((faq, index) => (
-        <FAQSectionWrapper
-          key={index}
-          isOpen={openIndex === index}
-          onClick={() => toggleFAQ(index)}
-        >
-          <FAQItem onClick={() => toggleFAQ(index)}>
-            <Question isOpen={openIndex === index}>
-              {faq.question} <PlusIcon isOpen={openIndex === index}>+</PlusIcon>
-            </Question>
-            <Answer isOpen={openIndex === index}>{faq.answer}</Answer>
-          </FAQItem>
-        </FAQSectionWrapper>
-      ))}
+      <Accordion>
+        {faqItems.map((item, index) => (
+          <AccordionItem key={index} onClick={() => toggleAccordion(index)}>
+            <AccordionButton
+              onClick={() => toggleAccordion(index)}
+              aria-expanded={activeIndex === index}
+            >
+              <span>{item.title}</span>
+              <Icon aria-expanded={activeIndex === index} />
+            </AccordionButton>
+            <AccordionContent
+              ref={(el) => {
+                if (el) contentRefs.current[index] = el;
+              }}
+              height={activeIndex === index ? getContentHeight(index) : 0}
+            >
+              <Answer>{item.content}</Answer>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </FAQContainer>
   );
 };
