@@ -12,13 +12,18 @@ import {
 } from "./style";
 
 const FAQSection = () => {
+  // State to track the currently active accordion index (null if none is active)
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  // Ref to store references to all accordion content div elements
   const contentRefs = useRef<HTMLDivElement[]>([]);
 
+  // Toggles the accordion's active state for a given index
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
+  // Retrieves the scroll height of the content for dynamic height calculation
   const getContentHeight = (index: number) => {
     if (contentRefs.current[index]) {
       return contentRefs.current[index].scrollHeight;
@@ -26,6 +31,7 @@ const FAQSection = () => {
     return 0;
   };
 
+  // Array containing FAQ items with title and content
   const faqItems = [
     {
       title:
@@ -42,7 +48,8 @@ const FAQSection = () => {
       title:
         "Can I send automated payment reminders to clients through Teamcamp?",
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tortor pretium viverra suspendisse potenti. Suspendisse potenti. Fusce ac nulla a ligula venenatis blandit." +
+        " (Repeating long content for testing dynamic height adjustment.)",
     },
     {
       title: "Does Teamcamp offer online payment processing for invoices?",
@@ -57,14 +64,15 @@ const FAQSection = () => {
   ];
 
   useEffect(() => {
-    // Optional: Handle content resize dynamically
+    // Handle content resize dynamically using ResizeObserver
     const resizeObserver = new ResizeObserver(() => {
       if (activeIndex !== null && contentRefs.current[activeIndex]) {
-        // Force re-render with updated height
+        // Trigger a re-render to update the content height
         setActiveIndex((prev) => prev);
       }
     });
 
+    // Observe each content element for resizing
     contentRefs.current.forEach((ref) => {
       if (ref) resizeObserver.observe(ref);
     });
@@ -74,24 +82,33 @@ const FAQSection = () => {
 
   return (
     <FAQContainer>
+      {/* FAQ Section Title */}
       <FAQTitle>Frequently asked questions</FAQTitle>
+      {/* FAQ Section Description */}
       <FAQDescription>Have questions? We’re here to help.</FAQDescription>
+      {/* Accordion Wrapper */}
       <Accordion>
+        {/* Loop through FAQ items and render each accordion item */}
         {faqItems.map((item, index) => (
           <AccordionItem key={index} onClick={() => toggleAccordion(index)}>
+            {/* Accordion Button for each item */}
             <AccordionButton
               onClick={() => toggleAccordion(index)}
               aria-expanded={activeIndex === index}
             >
+              {/* Accordion Title */}
               <span>{item.title}</span>
+              {/* Accordion Icon indicating open/close state */}
               <Icon aria-expanded={activeIndex === index} />
             </AccordionButton>
+            {/* Accordion Content that expands or collapses */}
             <AccordionContent
               ref={(el) => {
-                if (el) contentRefs.current[index] = el;
+                if (el) contentRefs.current[index] = el; // Store reference to each content element
               }}
-              height={activeIndex === index ? getContentHeight(index) : 0}
+              height={activeIndex === index ? getContentHeight(index) : 0} // Dynamic height calculation
             >
+              {/* Content/Answer for each FAQ item */}
               <Answer>{item.content}</Answer>
             </AccordionContent>
           </AccordionItem>
