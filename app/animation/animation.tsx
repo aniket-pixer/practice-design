@@ -1,11 +1,14 @@
 import AnimationSection from "@/components/animationSection";
+import InvoicePdf from "@/components/InvoicePdf";
 import React from "react";
+import { AnimationPdfWrapper } from "./style";
 
 function Animation() {
   return (
-    <div>
+    <AnimationPdfWrapper>
       <AnimationSection />
-    </div>
+      <InvoicePdf />
+    </AnimationPdfWrapper>
   );
 }
 

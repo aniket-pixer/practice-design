@@ -42,7 +42,7 @@ const StyleDuration2 = styled.div`
 
 const TegList = styled.div`
   width: 14rem;
-  height: 88dvh;
+  height: 86dvh;
   margin: auto;
   /* max-width: 90vw; */
   display: flex;
