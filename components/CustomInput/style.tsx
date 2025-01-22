@@ -87,7 +87,7 @@ const InputWrapper = styled.div`
 const Dropdown = styled.div`
   position: absolute;
   top: 100%;
-  left: 0;
+  width: auto;
   right: 0;
   background: white;
   border: 1px solid #d9d9d9;
